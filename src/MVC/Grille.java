@@ -25,5 +25,4 @@ public class Grille extends JPanel {
     public void ajouteElement (JComponent element) {
         this.add(element);
     }
-
 }

@@ -53,14 +53,12 @@ public class Case extends ZoneCliquable {
         }
     }
 
-    public void setRessource(Ressource r)
-    {
+    public void setRessource(Ressource r) {
         this.ressource = r;
         this.occupeeRessource = true;
     }
 
-    public void removeRessource()
-    {
+    public void removeRessource() {
         this.ressource = null;
         this.occupeeRessource = false;
     }

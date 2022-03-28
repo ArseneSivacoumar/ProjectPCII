@@ -59,7 +59,6 @@ public class Etat {
 	 * Methode pour initialiser les ressources.
 	 */
 	public void initRessources() {
-
 		Random rand = new Random();
 		int nbRessources = rand.nextInt(51) + 20;
 		System.out.println("Nb ressources qu'on souhaite initialiser : "+nbRessources);
@@ -67,20 +66,16 @@ public class Etat {
 			boolean tempB = true;
 			Ressource temp = new Ressource();
 			if(!this.listRessource.isEmpty()) {
-				for(Ressource res : this.listRessource)
-				{
+				for(Ressource res : this.listRessource) {
 					//Verification si il n'y a pas de ressource deja presente dans la case où on souhaite ajouter une ressource.
-					if(temp.getPosition().x == res.getPosition().x && temp.getPosition().y == res.getPosition().y)
-					{
+					if(temp.getPosition().x == res.getPosition().x && temp.getPosition().y == res.getPosition().y) {
 						tempB = false;
 						break;
 					}
 				}
 			}
-			if(tempB)
-			{
+			if(tempB) {
 				this.listRessource.add(temp);
-
 				nbRessources--;
 			}
 		}
@@ -90,26 +85,19 @@ public class Etat {
 	/**
 	 * Thread pour ajouter des ressources toutes les 2,5 secondes.
 	 */
-	public void threadRessource()
-	{
-		new Thread(() ->
-		{
-			while(true)
-			{
+	public void threadRessource() {
+		new Thread(() -> {
+			while(true) {
 				boolean tempB = true;
 				Ressource r = new Ressource();
-				if(this.listRessource.size() < 60)
-				{
-					for (Ressource res : this.listRessource)
-					{
-						if (r.getPosition().x == res.getPosition().x && r.getPosition().y == res.getPosition().y)
-						{
+				if(this.listRessource.size() < 60) {
+					for (Ressource res : this.listRessource) {
+						if (r.getPosition().x == res.getPosition().x && r.getPosition().y == res.getPosition().y) {
 							tempB = false;
 							break;
 						}
 					}
-					if(tempB)
-					{
+					if(tempB) {
 						this.listRessource.add(r); // ajoute de la nouvelle ressource a la liste de ressources.
 						System.out.println(this.listRessource.size());
 						System.out.println("Coordonnee de la ressource ajouter : "+r.getPosition());
@@ -117,8 +105,7 @@ public class Etat {
 						this.aff.refreshReesources(); // appel pour actualiser l'affichage graphique.
 					}
 				}
-				try
-				{
+				try {
 					Thread.sleep(2500);
 				} catch(Exception e) {
 					e.printStackTrace();
@@ -126,8 +113,8 @@ public class Etat {
 			}
 		}).start();
 	}
-	public ArrayList<Ressource> getListRessource()
-	{
+
+	public ArrayList<Ressource> getListRessource() {
 		return this.listRessource;
 	}
 
@@ -149,5 +136,4 @@ public class Etat {
 			tempspassee = 0;
 		}
 	}*/
-
 }

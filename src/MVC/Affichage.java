@@ -37,7 +37,7 @@ public class Affichage extends Grille {
 
 	public void setAllRessources() {
 		for (Ressource r : this.etat.getListRessource()) {
-			System.out.println("x = " + r.getPosition().x + " " + "y = " + r.getPosition().y);
+			//System.out.println("x = " + r.getPosition().x + " " + "y = " + r.getPosition().y);
 			this.plateau[r.getPosition().x][r.getPosition().y].setRessource(r);
 		}
 	}

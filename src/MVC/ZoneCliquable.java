@@ -12,17 +12,6 @@ public class ZoneCliquable extends Controle {
         super(e, x, y);
     }
 
-    // Permet de tester si une case est occupée.
-    public boolean estOccupee() { return this.occupee; }
-
-    public void poseElement(){
-        this.occupee = true;
-    }
-
-    public void enleveElement(){
-        this.occupee = false;
-    }
-
     /**
      * Interfaçage entre la bibliothèque standard et les méthodes [clicGauche]
      * et [clicDroit].

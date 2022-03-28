@@ -135,7 +135,7 @@ public class Etat {
 		return ordi;
 	}
 
-	public void createCaserne(Joueur joueur, Point pos) {
+	/*public void createCaserne(Joueur joueur, Point pos) {
 		int tempsConstruc = 10;
 		timer.schedule(new TimerTask() {
 			@Override
@@ -148,6 +148,6 @@ public class Etat {
 			timer.cancel();
 			tempspassee = 0;
 		}
-	}
+	}*/
 
 }

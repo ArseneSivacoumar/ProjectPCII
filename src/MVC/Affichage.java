@@ -46,14 +46,11 @@ public class Affichage extends Grille {
 	/**
 	 * Methode pour actualiser l'affichage graphique.
 	 */
-	public void refreshReesources()
-	{
-		for(Case[] tabCase : this.plateau)
-		{
-			for(Case c : tabCase)
-			{
+	public void refreshReesources() {
+		for (Case[] tabCase : this.plateau) {
+			for (Case c : tabCase) {
 				// repaint seulement les cases ou il y'a une ressource.
-				if(c.estOccupeeRessource())
+				if (c.estOccupeeRessource())
 					c.repaint();
 			}
 		}
@@ -63,12 +60,12 @@ public class Affichage extends Grille {
 		return plateau;
 	}
 
-	public void setCase(Point pos) {
+/*	public void setCase(Point pos) {
 		plateau[pos.x][pos.y] = new Case(etat);
 		ajouteElement(plateau[pos.x][pos.y]);
-	}
+	}*/
   
-  	@Override
+/*  	@Override
 	public void paint(Graphics g) {
 		for(Unite u : etat.getJoueurs().get(0).getUnites()) {
 			if(u instanceof Ouvrier) {
@@ -76,4 +73,5 @@ public class Affichage extends Grille {
 			}
 		}
 	}
+}*/
 }

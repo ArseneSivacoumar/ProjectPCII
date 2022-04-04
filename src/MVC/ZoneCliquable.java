@@ -12,16 +12,5 @@ public class ZoneCliquable extends Controle {
         super(e, x, y);
     }
 
-    /**
-     * Interfaçage entre la bibliothèque standard et les méthodes [clicGauche]
-     * et [clicDroit].
-     */
-    public void mouseClicked(MouseEvent e) {
-       /* if (SwingUtilities.isRightMouseButton(e)) {
-            this.clicDroit();
-        } else {
-            this.clicGauche();
-        }*/
-        return;
-    }
+
 }

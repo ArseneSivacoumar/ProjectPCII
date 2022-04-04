@@ -1,53 +1,51 @@
 package MVC;
 
-import Batiments.Caserne;
 import Environnement.Carte;
 import Environnement.Ressource;
+import Environnement.typeRessource;
 import Joueurs.AIPlayer;
 import Joueurs.Joueur;
+import Unites.Combattante;
+import Unites.Unite;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class Etat {
 	private Carte carte = new Carte();
-	private ArrayList<Joueur> joueurs;
+	private Joueur joueur;
 	private Affichage aff;
-	private int nbJoueurs = 2;
 	private AIPlayer ordi /*= new Joueurs.AIPlayer(this) */;
 	private ArrayList<Ressource> listRessource = new ArrayList<>();
 	private Timer timer = new Timer();
 	private int tempspassee = 0;
+	public Point posInitial = null;
+	public Point posfinal = null;
 
 	public Etat(Affichage a) {
-		aff = a;
-		joueurs = new ArrayList<Joueur>();
-		Joueur j1 = new Joueur();
-		joueurs.add(j1);
+		this.aff = a;
+		//joueurs = new ArrayList<Joueur>();
+		this.joueur = new Joueur();
+		//joueurs.add(j1);
 		//initCarte();
-		initRessources();
+		this.initRessources();
 	}
 
-	public ArrayList<Joueur> getJoueurs() {
-		return joueurs;
+	public Joueur getJoueurs() {
+		return this.joueur;
 	}
 
-	public void initCarte() {
+	/*public void initCarte() {
 		for(Joueur j : joueurs) {
 			carte.getListeUnite().add(j.getUnites());
 		}
-	}
+	}*/
 
-	//public void initPlayer(Joueur player){
-	//	joueur = player;
-	//}
-
-	public Carte getCarte() {
+	/*public Carte getCarte() {
 		return carte;
-	}
+	}*/
 	
 	public boolean verifBorne(Point p) {
 	   return p.x <= carte.getLongueur()-1 && p.x > 0 &&
@@ -102,7 +100,7 @@ public class Etat {
 						System.out.println(this.listRessource.size());
 						System.out.println("Coordonnee de la ressource ajouter : "+r.getPosition());
 						this.aff.getPlateau()[r.getPosition().x][r.getPosition().y].setRessource(r); // ajout de la nouvelles ressource au plateau de jeu.
-						this.aff.refreshReesources(); // appel pour actualiser l'affichage graphique.
+						this.aff.refresh(); // appel pour actualiser l'affichage graphique.
 					}
 				}
 				try {
@@ -114,12 +112,71 @@ public class Etat {
 		}).start();
 	}
 
+	public void threadUnit() {
+		new Thread(() -> {
+			while(true) {
+				for (Case[] tabCase : this.aff.getPlateau()) {
+					for (Case c : tabCase) {
+						if (c.estOccupeUnit()) {
+							c.removeUnit();
+						}
+					}
+				}
+				for (Unite u : this.joueur.getUnites()) {
+					Case c = this.aff.getPlateau()[u.getPos().x][u.getPos().y];
+					c.setUnit(u);
+					if (c.estOccupeeRessource()) { // Je regarde si la case contient une ressource si c'est le cas alors je l'enleve et augmente le score du joueur
+						Ressource r = c.removeRessource();
+						if (r.gettR() == typeRessource.bois) {
+							joueur.setNbBois(1);
+							System.out.println("nombre de bois : " + joueur.getNbBois());
+						} else {
+							joueur.setNbNourritures(1);
+							System.out.println("nombre de nourriture : " + joueur.getNbNourritures());
+						}
+					}
+					//	this.aff.refreshUnit();
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+
+
 	public ArrayList<Ressource> getListRessource() {
 		return this.listRessource;
 	}
 
+	/*public void setCombattantePlateau(Combattante c){
+		this.joueur.addUnite(c);
+		this.aff.getPlateau()[c.getPos().x][c.getPos().y].setCombattante(c);
+	}*/
+
+	/*public void deplacementUnite(){
+		this.aff.getPlateau()[this.posInitial.x][this.posInitial.y].getCombattante().seDeplacer(this.pointDest);
+	}*/
+
 	public AIPlayer getAI() {
 		return ordi;
+	}
+
+	public void unitADeplacer() {
+		Case c = this.getAff().getPlateau()[posInitial.x][posInitial.y];
+		Unite u = c.getUnit();
+		// 	c.removeUnit();
+		u.setPosFinal(posfinal);
+		if(!u.isAlive()) {
+			u.start();
+		}
+		posInitial = posfinal;
+	}
+
+	private Affichage getAff() {
+		return this.aff;
 	}
 
 	/*public void createCaserne(Joueur joueur, Point pos) {

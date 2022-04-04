@@ -5,16 +5,12 @@ import java.awt.*;
 public class Combattante extends Unite{
     protected final int vie = 100;
     protected final int ATK = 10;
-    private Point position;
+    private Point position ;
     private Point posFinal = null;
 
     public Combattante(Point pos){
         super();
-        this.initialiseCombattante();
-    }
-
-    public void initialiseCombattante(){
-        this.position = new Point(13, 1);
+        this.position = pos;
     }
 
     @Override

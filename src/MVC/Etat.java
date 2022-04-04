@@ -120,22 +120,29 @@ public class Etat {
 						if (c.estOccupeUnit()) {
 							c.removeUnit();
 						}
+						if (c.estOccupeeCombattante())
+							c.removeCombattante();
 					}
 				}
 				for (Unite u : this.joueur.getUnites()) {
 					Case c = this.aff.getPlateau()[u.getPos().x][u.getPos().y];
-					c.setUnit(u);
-					if (c.estOccupeeRessource()) { // Je regarde si la case contient une ressource si c'est le cas alors je l'enleve et augmente le score du joueur
-						Ressource r = c.removeRessource();
-						if (r.gettR() == typeRessource.bois) {
-							joueur.setNbBois(1);
-							System.out.println("nombre de bois : " + joueur.getNbBois());
-						} else {
-							joueur.setNbNourritures(1);
-							System.out.println("nombre de nourriture : " + joueur.getNbNourritures());
+					if (u instanceof Combattante) {
+						c.setCombattante((Combattante) u);
+					}
+					else {
+						c.setUnit(u);
+						if (c.estOccupeeRessource()) { // Je regarde si la case contient une ressource si c'est le cas alors je l'enleve et augmente le score du joueur
+							Ressource r = c.removeRessource();
+							if (r.gettR() == typeRessource.bois) {
+								joueur.setNbBois(1);
+								System.out.println("nombre de bois : " + joueur.getNbBois());
+							}
+							else {
+								joueur.setNbNourritures(1);
+								System.out.println("nombre de nourriture : " + joueur.getNbNourritures());
+							}
 						}
 					}
-					//	this.aff.refreshUnit();
 				}
 				try {
 					Thread.sleep(1000);
@@ -151,14 +158,10 @@ public class Etat {
 		return this.listRessource;
 	}
 
-	/*public void setCombattantePlateau(Combattante c){
+	public void setCombattantePlateau(Combattante c){
 		this.joueur.addUnite(c);
 		this.aff.getPlateau()[c.getPos().x][c.getPos().y].setCombattante(c);
-	}*/
-
-	/*public void deplacementUnite(){
-		this.aff.getPlateau()[this.posInitial.x][this.posInitial.y].getCombattante().seDeplacer(this.pointDest);
-	}*/
+	}
 
 	public AIPlayer getAI() {
 		return ordi;
@@ -166,8 +169,13 @@ public class Etat {
 
 	public void unitADeplacer() {
 		Case c = this.getAff().getPlateau()[posInitial.x][posInitial.y];
-		Unite u = c.getUnit();
-		// 	c.removeUnit();
+		Unite u = null;
+		if(c.estOccupeUnit()) {
+			u = c.getUnit();
+		}
+		else if(c.estOccupeeCombattante())
+			u = c.getCombattante();
+		System.out.println("pos :"+u.getPos());
 		u.setPosFinal(posfinal);
 		if(!u.isAlive()) {
 			u.start();

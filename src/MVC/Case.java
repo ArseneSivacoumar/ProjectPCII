@@ -4,6 +4,7 @@ import Environnement.Ressource;
 import Environnement.typeRessource;
 import Unites.Unite;
 import Unites.Ouvrier;
+import Unites.Combattante;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,8 +18,8 @@ public class Case extends ZoneCliquable {
     private Point posInGrid;
     private Ressource ressource = null;
     private boolean occupeeRessource = false;
-    //private Combattante c = null;
-    //private boolean occupeCombattante = false;
+    private Combattante c = null;
+    private boolean occupeCombattante = false;
     private Unite u = null;
     private boolean occupeUnite = false;
 
@@ -41,9 +42,9 @@ public class Case extends ZoneCliquable {
             drawRessource(g);
 
         //affichage graphique des combattantes
-       /* if(this.occupeCombattante)
+        if(this.occupeCombattante)
             drawCombattante(g);
-        */
+
         if(this.occupeUnite) {
             drawUnit(g);
         }
@@ -52,7 +53,7 @@ public class Case extends ZoneCliquable {
     // Permet de tester si une case est occupée par une ressource.
     public boolean estOccupeeRessource() { return this.occupeeRessource; }
 
-    /*public boolean estOccupeeCombattante() { return this.occupeCombattante; }*/
+    public boolean estOccupeeCombattante() { return this.occupeCombattante; }
 
     /**
      * Methode pour effectuer l'affichage graphique des ressources.
@@ -105,7 +106,7 @@ public class Case extends ZoneCliquable {
         return r;
     }
 
-   /* public void setCombattante(Combattante c){
+    public void setCombattante(Combattante c){
         this.c = c;
         this.occupeCombattante = true;
     }
@@ -118,7 +119,7 @@ public class Case extends ZoneCliquable {
     public Combattante getCombattante(){
         return this.c;
     }
-    */
+
     public void mouseClicked(MouseEvent e) {
         if (SwingUtilities.isRightMouseButton(e)) {
             clicDroit(e);

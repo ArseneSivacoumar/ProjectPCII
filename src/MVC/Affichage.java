@@ -32,7 +32,7 @@ public class Affichage extends Grille {
 		this.setBackground(Color.orange);
 		this.etat.threadUnit();
 		this.etat.threadRessource();
-		//this.etat.setCombattantePlateau(new Combattante());
+		this.etat.setCombattantePlateau(new Combattante(new Point(13, 1)));
 	}
 
 	/**

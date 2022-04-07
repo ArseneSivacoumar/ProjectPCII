@@ -8,9 +8,6 @@ public class Ouvrier extends Unite {
 
 	private int vie = 100;
 
-	public Ouvrier() {
-	}
-
 	public Ouvrier(Point pos) {
 		position = pos;
 	}
@@ -49,7 +46,7 @@ public class Ouvrier extends Unite {
 				position =  new Point(position.x, position.y - 1);
 			}
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(1500);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
@@ -59,5 +56,15 @@ public class Ouvrier extends Unite {
 	@Override
 	public void setPosFinal(Point p) {
 		posFinal = p;
+	}
+
+	@Override
+	public void setVie(int v) {
+		this.vie = v;
+	}
+
+	@Override
+	public int getVie() {
+		return this.vie;
 	}
 }

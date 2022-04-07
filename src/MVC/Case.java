@@ -1,10 +1,8 @@
 package MVC;
 
-import Environnement.Ressource;
-import Environnement.typeRessource;
-import Unites.Unite;
-import Unites.Ouvrier;
-import Unites.Combattante;
+import Environnement.*;
+import Unites.*;
+import Batiments.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,10 +16,21 @@ public class Case extends ZoneCliquable {
     private Point posInGrid;
     private Ressource ressource = null;
     private boolean occupeeRessource = false;
+
+    private Unite u = null;
+    public boolean occupeUnite = false;
+
     private Combattante c = null;
     private boolean occupeCombattante = false;
-    private Unite u = null;
-    private boolean occupeUnite = false;
+
+    private CombattanteAI combattanteAI = null;
+    private boolean occupeCombattanteAI = false;
+
+    private Fourmiliere f = null;
+    private boolean occupeFourmiliere = false;
+
+    private Caserne caserne = null;
+    private boolean occupeCaserne = false;
 
     // Constructeur
     public Case(Etat e, Point p) {
@@ -48,12 +57,23 @@ public class Case extends ZoneCliquable {
         if(this.occupeUnite) {
             drawUnit(g);
         }
+        if(this.occupeCombattanteAI) {
+            drawCombattanteAI(g);
+        }
+        if(this.estOccupeFourmiliere()) {
+            drawFourmiliere(g);
+        }
+        if(this.estOccupeCaserne()) {
+            drawCaserne(g);
+        }
     }
 
     // Permet de tester si une case est occupée par une ressource.
     public boolean estOccupeeRessource() { return this.occupeeRessource; }
 
     public boolean estOccupeeCombattante() { return this.occupeCombattante; }
+
+    public boolean estOccupeeCombattanteAI() { return this.occupeCombattanteAI; }
 
     /**
      * Methode pour effectuer l'affichage graphique des ressources.
@@ -94,6 +114,47 @@ public class Case extends ZoneCliquable {
         }
     }
 
+    public void drawCombattanteAI(Graphics g) {
+        try {
+            Image image = ImageIO.read(new File("Ressources/combattanteAI.jpg"));
+            g.drawImage(image, 0, 0, 1353/35, 1076/20, this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *
+     * @param g
+     *
+     * J'affiche l'image de la fourmiliere qui genere les ouvieres
+     */
+
+    public void drawFourmiliere(Graphics g){
+        try {
+            Image image = ImageIO.read(new File("Ressources/fourmiliere.jpg"));
+            g.drawImage(image, 0, 0, 612/10, 467/10, this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *
+     * @param g
+     *
+     * J'affiche l'image de la caserne qui genere les combattantes
+     */
+
+    public void drawCaserne(Graphics g){
+        try {
+            Image image = ImageIO.read(new File("Ressources/caserne.jpg"));
+            g.drawImage(image, 0, 0, 800/15, 601/15, this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setRessource(Ressource r) {
         this.ressource = r;
         this.occupeeRessource = true;
@@ -120,17 +181,73 @@ public class Case extends ZoneCliquable {
         return this.c;
     }
 
+    public void setCombattanteAI(CombattanteAI c){
+        this.combattanteAI = c;
+        this.occupeCombattanteAI = true;
+    }
+
+    public void removeCombattanteAI(){
+        this.combattanteAI = null;
+        this.occupeCombattanteAI = false;
+    }
+
+    public CombattanteAI getCombattanteAI(){
+        return this.combattanteAI;
+    }
+
+    public boolean estOccupeFourmiliere() {
+        return this.occupeFourmiliere;
+    }
+
+    public void setFourmiliere(Fourmiliere fo) {
+        this.f = fo;
+        this.occupeFourmiliere = true;
+    }
+
+    public boolean estOccupeCaserne() {
+        return this.occupeCaserne;
+    }
+
+    public void setCaserne(Caserne c) {
+        this.caserne = c;
+        this.occupeCaserne = true;
+    }
+
     public void mouseClicked(MouseEvent e) {
         if (SwingUtilities.isRightMouseButton(e)) {
             clicDroit(e);
         }
         else {
-            clicGauche(e);
+            if(estOccupeFourmiliere()) {
+                if(!(super.getEtat().getJoueurs().getNbNourritures() < 10)) {
+                    super.getEtat().getJoueurs().addUnite(new Ouvrier(new Point(14, 2)));
+                    super.getEtat().getJoueurs().setNbNourritures(-10);
+                    System.out.println("Vous generez une ouvriere : - 10 de nourriture ! Votre nombre de nourriture : " + super.getEtat().getJoueurs().getNbNourritures());
+                }
+                else {
+                    System.out.println("Vous n'avez pas assez de nourritures !");
+                }
+
+            }
+            else if(estOccupeCaserne()) {
+                if(!(super.getEtat().getJoueurs().getNbBois() < 20)) {
+                    super.getEtat().getJoueurs().addUnite(new Combattante(new Point(13, 1)));
+                    super.getEtat().getJoueurs().setNbBois(-20);
+                    System.out.println("Vous generez une ouvriere : - 20 de bois ! Votre nombre de bois : " + super.getEtat().getJoueurs().getNbBois());
+                }
+                else {
+                    System.out.println("Vous n'avez pas assez de bois !");
+                }
+            }
+            else {
+                clicGauche(e);
+            }
         }
     }
 
     public void clicDroit(MouseEvent e) {
         super.getEtat().posInitial = posInGrid;
+
     }
 
     public void clicGauche(MouseEvent e) {

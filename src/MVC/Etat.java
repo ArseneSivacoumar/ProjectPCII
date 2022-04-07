@@ -1,56 +1,33 @@
 package MVC;
 
-import Environnement.Carte;
-import Environnement.Ressource;
-import Environnement.typeRessource;
+import Batiments.*;
+import Environnement.*;
 import Joueurs.AIPlayer;
 import Joueurs.Joueur;
-import Unites.Combattante;
-import Unites.Unite;
+import Unites.*;
+import javax.swing.JOptionPane;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Timer;
 
 public class Etat {
-	private Carte carte = new Carte();
-	private Joueur joueur;
+	private Joueur Joueur;
 	private Affichage aff;
-	private AIPlayer ordi /*= new Joueurs.AIPlayer(this) */;
+	private AIPlayer ordi;
 	private ArrayList<Ressource> listRessource = new ArrayList<>();
-	private Timer timer = new Timer();
-	private int tempspassee = 0;
 	public Point posInitial = null;
 	public Point posfinal = null;
 
 	public Etat(Affichage a) {
 		this.aff = a;
-		//joueurs = new ArrayList<Joueur>();
-		this.joueur = new Joueur();
-		//joueurs.add(j1);
-		//initCarte();
+		this.Joueur = new Joueur();
+		this.ordi = new AIPlayer(this);
 		this.initRessources();
 	}
 
 	public Joueur getJoueurs() {
-		return this.joueur;
-	}
-
-	/*public void initCarte() {
-		for(Joueur j : joueurs) {
-			carte.getListeUnite().add(j.getUnites());
-		}
-	}*/
-
-	/*public Carte getCarte() {
-		return carte;
-	}*/
-	
-	public boolean verifBorne(Point p) {
-	   return p.x <= carte.getLongueur()-1 && p.x > 0 &&
-			   p.y <= carte.getLargeur()-1 && p.y > 0;
-
+		return this.Joueur;
 	}
 
 	/**
@@ -119,30 +96,44 @@ public class Etat {
 					for (Case c : tabCase) {
 						if (c.estOccupeUnit()) {
 							c.removeUnit();
+							this.aff.repaint();
 						}
-						if (c.estOccupeeCombattante())
+						if (c.estOccupeeCombattante()) {
 							c.removeCombattante();
+							this.aff.repaint();
+						}
+						if (c.estOccupeeCombattanteAI()) {
+							c.removeCombattanteAI();
+							this.aff.repaint();
+						}
 					}
 				}
-				for (Unite u : this.joueur.getUnites()) {
+				for (Unite u : Joueur.getUnites()) {
 					Case c = this.aff.getPlateau()[u.getPos().x][u.getPos().y];
 					if (u instanceof Combattante) {
 						c.setCombattante((Combattante) u);
-					}
-					else {
+					} else {
 						c.setUnit(u);
 						if (c.estOccupeeRessource()) { // Je regarde si la case contient une ressource si c'est le cas alors je l'enleve et augmente le score du joueur
 							Ressource r = c.removeRessource();
 							if (r.gettR() == typeRessource.bois) {
-								joueur.setNbBois(1);
-								System.out.println("nombre de bois : " + joueur.getNbBois());
-							}
-							else {
-								joueur.setNbNourritures(1);
-								System.out.println("nombre de nourriture : " + joueur.getNbNourritures());
+								System.out.println("nombre de bois : " + Joueur.getNbBois());
+							} else {
+								Joueur.setNbNourritures(1);
+								System.out.println("nombre de nourriture : " + Joueur.getNbNourritures());
 							}
 						}
 					}
+				}
+				for (CombattanteAI u : ordi.getUnit()) {
+					Case c = this.aff.getPlateau()[u.getPos().x][u.getPos().y];
+					c.setCombattanteAI(u);
+				}
+				//Verification de fin partie
+				if (Joueur.getNbNourritures() >= 110) {
+					win();
+				} else if (Joueur.getNbNourritures() < 10 && (Joueur.getNbBois() < 20 && Joueur.getUnites().size() == 0)) {
+					lose();
 				}
 				try {
 					Thread.sleep(1000);
@@ -159,7 +150,7 @@ public class Etat {
 	}
 
 	public void setCombattantePlateau(Combattante c){
-		this.joueur.addUnite(c);
+		this.Joueur.addUnite(c);
 		this.aff.getPlateau()[c.getPos().x][c.getPos().y].setCombattante(c);
 	}
 
@@ -187,18 +178,124 @@ public class Etat {
 		return this.aff;
 	}
 
-	/*public void createCaserne(Joueur joueur, Point pos) {
-		int tempsConstruc = 10;
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				tempspassee++;
+	public void threadAttaqueJoueur(){
+		new Thread(() -> {
+			while(true){
+				ArrayList<Unite> listUniteJ = this.Joueur.getUnites();
+				ArrayList<CombattanteAI> listUniteE = this.ordi.getUnit();
+				ArrayList<Point> temp = new ArrayList<Point>();
+				for(Unite uJ : listUniteJ){
+					for(Unite uAI : listUniteE){
+						if(uJ instanceof Combattante){
+							Point p1 = uJ.getPos();
+							Point p2 = uAI.getPos();
+							int xValide = Math.abs(p1.x - p2.x);
+							int yValide = Math.abs(p1.y - p2.y);
+							if(xValide == 1 || yValide == 1){
+								uAI.setVie(uAI.getVie()-((Combattante) uJ).getAttack());
+								System.out.println(uAI.getVie());
+								if(uAI.getVie() <= 0){
+									temp.add(uAI.getPos());
+								}
+							}
+						}
+					}
+				}
+				for(Point p : temp){
+					this.getAI().getUnit().remove(this.aff.getPlateau()[p.x][p.y].getCombattanteAI());
+					this.aff.getPlateau()[p.x][p.y].removeCombattanteAI();
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		}, 1000, 1000);
-		if (tempspassee == tempsConstruc) {
-			joueur.addBat(new Caserne(pos, carte, joueur));
-			timer.cancel();
-			tempspassee = 0;
-		}
-	}*/
+		}).start();
+	}
+
+	public void threadAttaqueAI(){
+		new Thread(() -> {
+			while(true){
+				ArrayList<Unite> listUniteJ = this.Joueur.getUnites();
+				ArrayList<CombattanteAI> listUniteE = this.ordi.getUnit();
+				ArrayList<Point> temp = new ArrayList<Point>();
+
+				for(Unite uAI : listUniteE){
+					for(Unite uJ : listUniteJ){
+						if(uAI instanceof CombattanteAI){
+							Point p1 = uJ.getPos();
+							Point p2 = uAI.getPos();
+							int xValide = Math.abs(p1.x - p2.x);
+							int yValide = Math.abs(p1.y - p2.y);
+							if(xValide == 1 || yValide == 1){
+								uJ.setVie(uJ.getVie() - ((CombattanteAI) uAI).getAttack());
+								//System.out.println(uJ.getVie());
+								if(uJ.getVie() <= 0) {
+									temp.add(uJ.getPos());
+								}
+							}
+						}
+						else if(uAI instanceof Ouvrier){
+							Point p1 = uJ.getPos();
+							Point p2 = uAI.getPos();
+							int xValide = Math.abs(p1.x - p2.x);
+							int yValide = Math.abs(p1.y - p2.y);
+							if(xValide == 1 || yValide == 1){
+								uJ.setVie(uJ.getVie() - ((CombattanteAI) uAI).getAttack());
+								System.out.println(uJ.getVie());
+								if(uJ.getVie() <= 0) {
+									temp.add(uJ.getPos());
+								}
+							}
+						}
+					}
+				}
+				for(Point p : temp){
+					Case c = this.aff.getPlateau()[p.x][p.y];
+					if(c.estOccupeUnit()){
+						this.getJoueurs().getUnites().remove(this.aff.getPlateau()[p.x][p.y].getUnit());
+						this.aff.getPlateau()[p.x][p.y].removeUnit();
+					}
+					else {
+						this.getJoueurs().getUnites().remove(this.aff.getPlateau()[p.x][p.y].getCombattante());
+						this.aff.getPlateau()[p.x][p.y].removeCombattante();
+					}
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+
+	public void setCombattanteAIPlateau(CombattanteAI c) {
+		this.aff.getPlateau()[c.getPos().x][c.getPos().y].setCombattanteAI(c);
+	}
+
+	public void setFourmilierePlateau(Fourmiliere f){
+		this.Joueur.addBat(f);
+		this.aff.getPlateau()[f.getPosition().x][f.getPosition().y].setFourmiliere(f);
+	}
+
+	public void setCasernePlateau(Caserne c){
+		this.Joueur.addBat(c);
+		this.aff.getPlateau()[c.getPosition().x][c.getPosition().y].setCaserne(c);
+	}
+
+
+	public void win() {
+		JOptionPane fin = new JOptionPane();
+		String s = "Vous avez assez de rations pour l'hiver pour votre fourmiliere, BRAVO !";
+		fin.showConfirmDialog(aff, s, "Victoire!", JOptionPane.DEFAULT_OPTION);
+	}
+
+	public void lose() {
+		JOptionPane fin = new JOptionPane();
+		String s = "Vous avez perdu !";
+		fin.showConfirmDialog(aff, s, "Defaite !", JOptionPane.DEFAULT_OPTION);
+	}
+
 }

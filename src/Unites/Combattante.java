@@ -3,7 +3,7 @@ package Unites;
 import java.awt.*;
 
 public class Combattante extends Unite{
-    protected final int vie = 100;
+    protected int vie = 100;
     protected final int ATK = 10;
     private Point position ;
     private Point posFinal = null;
@@ -41,7 +41,7 @@ public class Combattante extends Unite{
                 position = new Point(position.x, position.y - 1);
             }
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1500);
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -56,5 +56,19 @@ public class Combattante extends Unite{
     @Override
     public void setPosFinal(Point p) {
         posFinal = p;
+    }
+
+    public int getAttack(){
+        return this.ATK;
+    }
+
+    @Override
+    public int getVie(){
+        return this.vie;
+    }
+
+    @Override
+    public void setVie(int v){
+        this.vie = v;
     }
 }

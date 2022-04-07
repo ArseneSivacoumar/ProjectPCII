@@ -1,8 +1,7 @@
 package Joueurs;
 
 import Batiments.Batiment;
-import Unites.Ouvrier;
-import Unites.Unite;
+import Unites.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -17,8 +16,6 @@ public class Joueur {
 	public Joueur() {
 		nbBois = 100;
 		nbNourritures = 100;
-		listUnit.add(new Ouvrier(new Point(14, 0)));
-		listUnit.add(new Ouvrier(new Point(0, 14)));
 	}
 
 	public ArrayList<Unite> getUnites() {
@@ -60,5 +57,4 @@ public class Joueur {
 				res.add((Ouvrier) unit);
 		return res;
 	}
-
 }

@@ -1,9 +1,8 @@
 package MVC;
 
-import Environnement.Ressource;
-import Unites.Combattante;
-import Unites.Unite;
-import Joueurs.Joueur;
+import Environnement.*;
+import Unites.*;
+import Batiments.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -32,7 +31,14 @@ public class Affichage extends Grille {
 		this.setBackground(Color.orange);
 		this.etat.threadUnit();
 		this.etat.threadRessource();
-		this.etat.setCombattantePlateau(new Combattante(new Point(13, 1)));
+		//this.etat.setCombattantePlateau(new Combattante(new Point(13, 1)));
+		//this.etat.setCombattantePlateau(new Combattante(new Point(12, 2)));
+		this.etat.setFourmilierePlateau(new Fourmiliere(new Point(14, 1)));
+		this.etat.setCasernePlateau(new Caserne(new Point(13, 0)));
+
+		this.etat.getAI().start();
+		//this.etat.threadAttaqueJoueur();
+		this.etat.threadAttaqueAI();
 	}
 
 	/**
@@ -57,6 +63,8 @@ public class Affichage extends Grille {
 					c.repaint();
 				if(c.estOccupeUnit())
 					c.repaint();
+				if(c.estOccupeeCombattanteAI())
+					c.repaint();
 			}
 		}
 	}
@@ -64,19 +72,4 @@ public class Affichage extends Grille {
 	public Case[][] getPlateau() {
 		return plateau;
 	}
-
-/*	public void setCase(Point pos) {
-		plateau[pos.x][pos.y] = new Case(etat);
-		ajouteElement(plateau[pos.x][pos.y]);
-	}*/
-  
-/*  	@Override
-	public void paint(Graphics g) {
-		for(Unite u : etat.getJoueurs().get(0).getUnites()) {
-			if(u instanceof Ouvrier) {
-				((Ouvrier) u).paintComponent(g);
-			}
-		}
-	}
-}*/
 }

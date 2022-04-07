@@ -1,63 +1,64 @@
 package Joueurs;
 
-import MVC.Controle;
-import Unites.Ouvrier;
-import Unites.Unite;
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
+import MVC.Etat;
+import Unites.CombattanteAI;
+import Unites.Unite;
+
 public class AIPlayer extends Thread{
-	ArrayList<Unite> list = new ArrayList<Unite>();
-	//ArrayList<Batiments.Batiment> listBat = new ArrayList<Batiments.Batiment>();
-	
- //   private MVC.Etat etat;
-    private Controle control;
-	
-	public AIPlayer(Controle c) {
-	//	etat = e;
-		control = c;
-		
-		Unite unit1 = new Ouvrier(new Point(0,0));
-		list.add(unit1);
-		
-	//	this.start();
+	ArrayList<CombattanteAI> list = new ArrayList<CombattanteAI>();
+	private Etat etat;
+
+	public AIPlayer(Etat e) {
+		etat = e;
 	}
-	/*
+
 	@Override
 	public void  run() {
 		while(true) {
-			for(Unite fourmi : list) {
-				int random;
-				
-				Point p = new Point(0,0);
-				
-				while(!control.getEtat().verifBorne(p)) { // depasse d'une case par rapport � a borne 10, � faire
-                    random = (new Random()).nextInt(100);
-					if(random < 50) {
-						if(random < 25) p = new Point(fourmi.getPos().x - 1, fourmi.getPos().y - 1);
-						else  p = new Point(fourmi.getPos().x - 1, fourmi.getPos().y + 1);
-					}
-					else {
-						if(random < 75)  p = new Point(fourmi.getPos().x + 1, fourmi.getPos().y - 1);
-						else p = new Point(fourmi.getPos().x + 1, fourmi.getPos().y + 1);
+			ArrayList<Unite> unitesJoueur = etat.getJoueurs().getUnites();
+			Random rand = new Random();
+			int numUnitAChasser;
+
+			for(CombattanteAI u : list) {
+				if(u.getEnemy() >= unitesJoueur.size()) {
+					u.setID(-1);
+				}
+				if(u.getEnemy() == -1) {
+					if(unitesJoueur.size() > 0) {
+						numUnitAChasser = rand.nextInt(unitesJoueur.size());
+						u.setEnemy(numUnitAChasser, etat.getJoueurs().getUnites().get(numUnitAChasser).getPos());
 					}
 				}
-				fourmi.seDeplacer(p); 
-				//System.out.println(p.x + " " + p.y);
+				else {
+					if(u.getPosFinal().x == u.getPos().x && u.getPosFinal().y == u.getPos().y) {
+						u.setPosFinal(etat.getJoueurs().getUnites().get(u.getEnemy()).getPos());
+					}
+				}
+
 			}
-            control.getAff().setAIList(list);
-			control.getEtat().move();
+
+			// Je rajoute des combattanteAI si le nombre d'unite du joueur est trop grande
+			if(unitesJoueur.size()/2 > list.size()) {
+				CombattanteAI c = new CombattanteAI(new Point(0, 14));
+				list.add(c);
+				c.start();
+
+			}
+
+
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-	}*/
-	
-	public  ArrayList<Unite>getUnit() {
+	}
+
+	public  ArrayList<CombattanteAI> getUnit() {
 		return list;
 	}
 

@@ -21,18 +21,22 @@ Et entre chaque déplacement il y a 2 secondes. L'ensemble des méthodes sont si
 
 - Création et placement des ressources sur la grille de jeu.
 - Ajout de ressources durant le deroulement du jeu.
+- Création des Combattantes
+- Ajout fonctionnalités de combats pour les combattantes du joueur et AI
 
 ### Plan de développement : 
 
-Temps : 4h pour la conception, réflexion et documentation.
+Temps : 15 - 20h pour la conception, réflexion et documentation.
 
 ### Conception :  
 
     Liste des class et méthodes implementer pour les différentes fonctionnalités : 
         -Toute la class Environnement.Ressource.java
+        -Toute la class Unites.Combattantes.java
         -Dans la class MVC.Etat.java, les méthodes initRessource(), threadRessource() et getListRessource()
-        -Dans la class MVC.Affichage.java, les méthodes setAllRessource() et refreshRessources()
+        -Dans la class MVC.Affichage.java, les méthodes setAllRessource() et refresh()
         -Dans la class MVC.Case.java, les méthodes drawRessources(), setRessource() et removeRessource() 
+        -Dans la class MVC.Etat.java, les méthodes threadAttaqueJoueur() et threadAttaqueIA
 
 La class Ressource.java contient : 
 - enum Environnement.typeRessource avec deux valeus possibles : bois et nourriture.
@@ -45,13 +49,17 @@ La méthode setAllRessources() va parcourir la grille "plateau"(attribut de la c
 
 La méthode threadRessource() va lancé un thread qui va ajoute des ressouces toutes les 2.5 secondes sur le plateau en prenant en compte la limite de ressources present dans le jeu qui est fixé a 60 et la régle de 1 ressources par cases.
 
-La méthode refreshRessources() va actualiser l'affichage graphique(repaint) des cases pour les ressources.
+La méthode refresh() va actualiser l'affichage graphique(repaint) des cases.
 
 La méthode drawRessource() va prendre chaque ressource de listRessources et affiche une image de bois, si la ressource est de type « bois » sinon une image de miel pour le type de ressource « nourriture ». 
 
 La méthode setRessources() va prendre une ressource en paramétre et mettre cette ressource dans l'attribut ressource(qui est a null au si aucune ressource n'est présente) et mettre le boolean occupeeRessource a true.
 
 La méthode removeRessource() va mettre l'attribut ressource a null et le boolean occupeeRessource a false. Cette méthode sera utiliser lorque une unité ouvriére va récupérer une ressource.
+
+La méthode contient un thread qui permet de gerer l'attaque des troupes du joueur (classe Combattante) envers les unites de l'environnement seulement si les deux unites sont à au plus une case de difference.
+
+La méthode contient un thread permet de gerer l'attaque des unites de l'environnement sur les unites du joueursi les deux unites sont à au plus une case de difference.
 
 ## Partie réservée pour Charlies
 ### Fonctionnalités implémentées au cours de ce projet

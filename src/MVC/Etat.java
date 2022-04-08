@@ -151,6 +151,7 @@ public class Etat {
 
 						if(c.estOccupeeRessource()) { // Je regarde si la case contient une ressource si c'est le cas alors je l'enleve et augmente le score du joueur
 							Ressource r = c.removeRessource();
+							this.listRessource.remove(r);
 							if (r.gettR() == typeRessource.bois) {
 								joueur.setNbBois(1);
 								System.out.println("nombre de bois : " + joueur.getNbBois());

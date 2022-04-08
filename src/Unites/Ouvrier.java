@@ -17,7 +17,12 @@ public class Ouvrier extends Unite {
 		return position;
 	}
 
-
+	/**
+	 * Methode de la classe Thread qui permet le deplacement :
+	 * -en diagonale si l'abscisse et l'ordonné de la postion d'arrivé sont differents de l'abscisse et l'ordonné de la postion initial.
+	 * -en ordonné si ordonné de la position d'arrivé est differente de celle de la position initial
+	 * -en abscisse si abscisse de la position d'arrivé est différente de celle de la position intial.
+	 */
 	@Override
 	public void run() {
 		while(true) {
@@ -58,11 +63,18 @@ public class Ouvrier extends Unite {
 		posFinal = p;
 	}
 
+	/**
+	 *
+	 * @param v
+	 */
 	@Override
 	public void setVie(int v) {
 		this.vie = v;
 	}
 
+	/**
+	 * @return la vie de l'ouvrier
+	 */
 	@Override
 	public int getVie() {
 		return this.vie;

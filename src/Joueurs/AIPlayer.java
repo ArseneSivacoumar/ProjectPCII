@@ -19,7 +19,7 @@ public class AIPlayer extends Thread{
 	@Override
 	public void  run() {
 		while(true) {
-			ArrayList<Unite> unitesJoueur = etat.getJoueurs().getUnites();
+			ArrayList<Unite> unitesJoueur = etat.getJoueur().getUnites();
 			Random rand = new Random();
 			int numUnitAChasser;
 
@@ -30,12 +30,12 @@ public class AIPlayer extends Thread{
 				if(u.getEnemy() == -1) {
 					if(unitesJoueur.size() > 0) {
 						numUnitAChasser = rand.nextInt(unitesJoueur.size());
-						u.setEnemy(numUnitAChasser, etat.getJoueurs().getUnites().get(numUnitAChasser).getPos());
+						u.setEnemy(numUnitAChasser, etat.getJoueur().getUnites().get(numUnitAChasser).getPos());
 					}
 				}
 				else {
 					if(u.getPosFinal().x == u.getPos().x && u.getPosFinal().y == u.getPos().y) {
-						u.setPosFinal(etat.getJoueurs().getUnites().get(u.getEnemy()).getPos());
+						u.setPosFinal(etat.getJoueur().getUnites().get(u.getEnemy()).getPos());
 					}
 				}
 

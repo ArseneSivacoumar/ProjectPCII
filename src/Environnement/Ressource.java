@@ -1,6 +1,5 @@
 package Environnement;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
@@ -12,6 +11,9 @@ public class Ressource {
         initialiseRessources();
     }
 
+    /**
+     * Methode qui permet d'initialiser une ressource.
+     */
     public void initialiseRessources() {
         int xtmp;
         int ytmp;
@@ -19,7 +21,7 @@ public class Ressource {
         do {
             xtmp = rand.nextInt(15);
             ytmp = rand.nextInt(15);
-        } while ((xtmp > 11 || xtmp < 3) && (ytmp > 11 || ytmp < 3));
+        } while ((xtmp > 11 ) && (ytmp < 3) || (xtmp == 0 && ytmp == 14)); // les 9 cases en bas a gauche de la grille et la case (0,14) ne sont pas utiliser pour les ressources car elles sont utilisée pour les batiments et unités.
         this.position.setLocation(xtmp, ytmp);
         if (rand.nextInt(2) == 0)
             tR = typeRessource.bois;
@@ -27,12 +29,17 @@ public class Ressource {
             tR = typeRessource.nourriture;
     }
 
+    /**
+     * @return la position de la ressource
+     */
     public Point getPosition() {
         return this.position;
     }
 
-    public typeRessource gettR()
-    {
+    /**
+     * @return le type de la ressource.
+     */
+    public typeRessource gettR() {
         return tR;
     }
 }

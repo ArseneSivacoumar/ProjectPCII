@@ -12,7 +12,6 @@ public class Controle extends JPanel implements MouseListener {
 		etat = e;
 		setPreferredSize(new Dimension(x, y));
 		addMouseListener(this);
-		//setBackground(Color.WHITE);
 	}
 	
 	
@@ -22,26 +21,21 @@ public class Controle extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		//etat.createCaserne(etat.getJoueurs().get(0), new Point(e.getPoint().x, e.getPoint().y));
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-
 	}
 }

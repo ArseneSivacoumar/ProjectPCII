@@ -15,12 +15,12 @@ public class CombattanteAI extends Unite {
             position = pos;
         }
 
-        @Override
-        public Point getPos() {
-            return position;
-        }
-
-
+        /**
+        * Methode de la classe Thread qui permet le deplacement :
+        * -en diagonale si l'abscisse et l'ordonné de la postion d'arrivé sont differents de l'abscisse et l'ordonné de la postion initial.
+        * -en ordonné si ordonné de la position d'arrivé est differente de celle de la position initial
+         * -en abscisse si abscisse de la position d'arrivé est différente de celle de la position intial.
+        */
         @Override
         public void run() {
             while(true) {
@@ -59,33 +59,68 @@ public class CombattanteAI extends Unite {
             }
         }
 
+        /**
+        * Set la position final(position de destination pour effectuer le mouvement) de la combattante.
+        * @param p
+        */
         @Override
         public void setPosFinal(Point p) {
             posFinal = p;
         }
 
+        /**
+        *
+        * @return la position de la combattanteAI.
+        */
+        @Override
+        public Point getPos() {
+        return position;
+    }
+
+
+    /**
+        * Set la vie de la combattante.
+        * @param v
+        */
         @Override
         public void setVie(int v) {
             this.vie = v;
         }
 
+        /**
+        * @return la vie de la combattante.
+        */
         @Override
         public int getVie() {
             return this.vie;
         }
 
+        /**
+        * @return l'ID de l'ennemi.
+        */
         public int getEnemy() {
             return idEnemy;
         }
 
-        public Point getPosFinal() {
+        /**
+        * @return la position final(arriver)
+        */
+    public Point getPosFinal() {
             return posFinal;
         }
 
+        /**
+         * @return l'attaque de la combattante.
+        */
         public int getAttack(){
         return this.ATK;
     }
 
+        /**
+         * Set un id d'un ennemi et la position de l'ennemi(comme position final).
+        * @param i
+        * @param p
+        */
         public void setEnemy(int i, Point p) {
             idEnemy = i;
             posEnemy = p;
@@ -93,7 +128,11 @@ public class CombattanteAI extends Unite {
             setPosFinal(posEnemy);
         }
 
-    public void setID(int i) {
-        idEnemy = i;
-    }
+        /**
+        * Set l'ID de ennemi.
+        * @param i
+        */
+        public void setID(int i) {
+            idEnemy = i;
+        }
 }

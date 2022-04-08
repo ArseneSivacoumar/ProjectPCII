@@ -1,7 +1,5 @@
 package Batiments;
 import java.awt.Point;
-import java.util.ArrayList;
-import Unites.*;
 
 public class Fourmiliere extends Batiment {
     private Point position;
@@ -10,11 +8,9 @@ public class Fourmiliere extends Batiment {
         position = pos;
     }
 
-    public void addOuvrier(ArrayList<Unite> l) { // J'utilise pas vraiment en faite
-        Ouvrier o = new Ouvrier(new Point(14, 2));
-        l.add(o);
-    }
-
+    /**
+     * @return la position de la fourmiliére
+     */
     public Point getPosition() {
         return position;
     }

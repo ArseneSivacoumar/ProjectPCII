@@ -55,6 +55,8 @@ public class Affichage extends Grille {
 					c.repaint();
 				if(c.estOccupeeCombattanteAI())
 					c.repaint();
+				if(c.estOccupeeCombattante())
+					c.repaint();
 			}
 		}
 	}

@@ -240,7 +240,7 @@ public class Etat {
 			while(true){
 				ArrayList<Unite> listUniteJ = this.joueur.getUnites();
 				ArrayList<CombattanteAI> listUniteE = this.ordi.getUnit();
-				ArrayList<Point> temp = new ArrayList<Point>();
+				ArrayList<Point> temp = new ArrayList<>();
 
 				for(Unite uAI : listUniteE){
 					for(Unite uJ : listUniteJ){

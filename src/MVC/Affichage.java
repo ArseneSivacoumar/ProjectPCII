@@ -2,6 +2,8 @@ package MVC;
 
 import Environnement.*;
 import Batiments.*;
+import Unites.Combattante;
+import Unites.CombattanteAI;
 
 import java.awt.*;
 
@@ -26,6 +28,7 @@ public class Affichage extends Grille {
 		this.etat.threadUnit(); // Lancement du thread contenu dans la methode threadUnit pour les deplacement des unites du joueurs et verification condition de win ou lose.
 		this.etat.threadRessource(); // Lancement du thread contenu dans la methode threadRessource pour le spawn continuel de ressource sur le plateau.
 
+		this.etat.setCombattantePlateau(new Combattante(new Point(13, 1))); // Ajout d'une combattante au joueur pour le debut de partie
 		this.etat.setFourmilierePlateau(new Fourmiliere(new Point(14, 1))); // Initialisation d'une Fourmilliére sur le plateau.
 		this.etat.setCasernePlateau(new Caserne(new Point(13, 0))); // Initialisation d'une Caserne sur le plateau.
 

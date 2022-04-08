@@ -15,7 +15,7 @@ import Unites.Unite;
  */
 
 public class AIPlayer extends Thread{
-	ArrayList<CombattanteAI> list = new ArrayList<CombattanteAI>(); // Liste des unites de l'environnement qui va attaquer les unites du joueur
+	ArrayList<CombattanteAI> list = new ArrayList<>(); // Liste des unites de l'environnement qui va attaquer les unites du joueur
 	private Etat etat;
 
 	public AIPlayer(Etat e) {
@@ -74,5 +74,9 @@ public class AIPlayer extends Thread{
 	 */
 	public  ArrayList<CombattanteAI> getUnit() {
 		return list;
+	}
+
+	public void addCombattanteAI(CombattanteAI c){
+		this.list.add(c);
 	}
 }

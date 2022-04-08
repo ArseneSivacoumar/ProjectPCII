@@ -23,7 +23,7 @@ import java.util.Random;
 public class Etat {
 	private Joueur joueur;
 	private Affichage aff;
-	private AIPlayer ordi;
+	public AIPlayer ordi;
 	private ArrayList<Ressource> listRessource = new ArrayList<>();
 
 	public Point posInitial = null; // Cet attribut permet de faire passer la position intiale d'une unite pour effectuer une action
@@ -287,8 +287,7 @@ public class Etat {
 	/**
 	 * @return la liste des ressources sur le plateau de jeu
 	 */
-	public ArrayList<Ressource> getListRessource()
-	{
+	public ArrayList<Ressource> getListRessource() {
 		return this.listRessource;
 	}
 
@@ -338,6 +337,7 @@ public class Etat {
 	 * Permet de placer une unite de l'environnement sur le plateau
 	 */
 	public void setCombattanteAIPlateau(CombattanteAI c) {
+		this.ordi.getUnit().add(c);
 		this.aff.getPlateau()[c.getPos().x][c.getPos().y].setCombattanteAI(c);
 	}
 

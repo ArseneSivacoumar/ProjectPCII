@@ -260,6 +260,7 @@ public class Etat {
 					}
 				}
 
+
 				// On supprime du plateau les unites dont la vie est tombe a 0
 				for(Point p : temp){
 					Case c = this.aff.getPlateau()[p.x][p.y];

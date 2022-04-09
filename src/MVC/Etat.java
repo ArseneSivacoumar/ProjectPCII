@@ -209,7 +209,6 @@ public class Etat {
 							int yValide = Math.abs(p1.y - p2.y);
 							if(xValide <= 1 && yValide <= 1){ // On regarde si les deux unites sont a au plus une case de distance
 								uAI.setVie(uAI.getVie()-((Combattante) uJ).getAttack()); // On met a jour la vie de l'unite de l'environnement
-								System.out.println(uAI.getVie());
 								if(uAI.getVie() <= 0){
 									temp.add(uAI.getPos());
 								}
@@ -253,7 +252,6 @@ public class Etat {
 							int yValide = Math.abs(p1.y - p2.y);
 							if(xValide <= 1 && yValide <= 1){  // On regarde si les deux unites sont a au plus une case de distance
 								uJ.setVie(uJ.getVie() - ((CombattanteAI) uAI).getAttack()); // On met a jour la vie de l'unite du joueur
-								System.out.println(uJ.getVie());
 								if(uJ.getVie() <= 0) {
 									temp.add(uJ.getPos());
 								}
